@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-namespace RadekZ\Storehouse\APIBundle\DependencyInjection;
+namespace Kemoc\Storehouse\APIBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
