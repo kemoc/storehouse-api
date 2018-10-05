@@ -1,0 +1,71 @@
+{
+    "name": "kemoc/storehouse-api",
+    "type": "symfony-bundle",
+    "description": "Simple storehouse API on Symfony 4",
+    "keywords": [
+        "storehouse", "storehouse api", "symfony-bundle", "kemoc", "radekz"
+    ],
+    "homepage": "https://github.com/kemoc/storehouse-api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Radosław Zadroga"
+        }
+    ],
+    "require": {
+        "php": "^7.2.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "symfony/http-kernel": "~3.4|~4.0",
+        "sensio/framework-extra-bundle": "^5.1",
+        "symfony/console": "*",
+        "symfony/expression-language": "*",
+        "symfony/flex": "^1.1",
+        "symfony/framework-bundle": "*",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/orm-pack": "*",
+        "symfony/process": "*",
+        "symfony/security-bundle": "*",
+        "symfony/serializer-pack": "*",
+        "symfony/swiftmailer-bundle": "^3.1",
+        "symfony/validator": "*",
+        "symfony/web-link": "*",
+        "symfony/yaml": "*"
+    },
+    "require-dev": {
+        "symfony/debug-pack": "*",
+        "symfony/dotenv": "*",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/profiler-pack": "*",
+        "symfony/test-pack": "*",
+        "symfony/web-server-bundle": "*"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "RadekZ\\Storehouse\\APIBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RadekZ\\Storehouse\\APIBundle\\Tests\\": "tests/"
+        }
+    },
+    "conflict": {
+        "symfony/symfony": "<3.4",
+        "symfony/http-kernel": "<3.4",
+        "symfony/dependency-injection": "<3.4",
+        "symfony/yaml": "<3.4"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.1.*"
+        }
+    }
+}

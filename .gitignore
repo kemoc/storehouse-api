@@ -1,0 +1,68 @@
+/build/
+/node_modules/
+npm-debug.log
+yarn-error.log
+/var/*
+!/var/cache
+/var/cache/*
+!/var/cache/.gitkeep
+!/var/data
+!/var/log
+/var/log/*
+!/var/log/.gitkeep
+!/var/sessions
+/var/sessions/*
+!/var/sessions/.gitkeep
+!/var/SymfonyRequirements.php
+/public/build/fonts/glyphicons-*
+/public/build/images/glyphicons-*
+
+###> symfony/framework-bundle ###
+/.env
+/public/bundles/
+/vendor/*
+!/vendor/.keep
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-pack ###
+/public/build/
+
+###< symfony/webpack-encore-pack ###
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+
+/.idea/
+
+/bin/bash/.env.sh
+
+/docker/.env
+/docker/log/*/*/*
+/docker/bin/bash/.env.sh
+/docker/services/nginx/etc/nginx/conf.d/vhost.conf
+/docker/services/app/etc/php/7.1-fpm/php.ini
+/docker/services/app/etc/php/7.2-fpm/php.ini
+/docker/volumes/var/run/php-fpm/*
+
+/.sass-cache/
+/css/
+
+/public/css/*
+#/public/js/*
+/public/vendor
+/public/js/vendor
+
+/.php_cs
+!.keep
+!.gitkeep
+
+/docker/
+
+
