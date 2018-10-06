@@ -48,12 +48,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Kemoc\\Storehouse\\APIBundle\\": "src/"
+            "Kemoc\\Storehouse\\ApiBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Kemoc\\Storehouse\\APIBundle\\Tests\\": "tests/"
+            "Kemoc\\Storehouse\\ApiBundle\\Tests\\": "tests/"
         }
     },
     "conflict": {

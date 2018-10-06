@@ -1,25 +1,29 @@
 <?php
 declare(strict_types=1);
 
-namespace Kemoc\Storehouse\APIBundle\DependencyInjection;
+namespace Kemoc\Storehouse\ApiBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
-class KemocStorehouseAPIExtension extends Extension
+class KemocStorehouseApiExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config/packages'));
-        $loader->load('services.yaml');
-        $loader->load('storehouse_api.yaml');
-
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
+        //var_dump($config);die;
+
+        if(isset($config['enabled']) and $config['enabled'])
+        {
+            $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('services.yaml');
+        }
     }
 }

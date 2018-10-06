@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-namespace Kemoc\Storehouse\APIBundle\DependencyInjection;
+namespace Kemoc\Storehouse\ApiBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -15,7 +15,11 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('storehouse_api');
+        $rootNode = $treeBuilder->root('kemoc_storehouse_api');
+        $rootNode->children()
+            ->booleanNode('enabled')
+                ->defaultTrue()->end()
+            ->end();
 
         return $treeBuilder;
     }
