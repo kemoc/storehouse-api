@@ -6,7 +6,7 @@ Add routing to /config/routes.yaml
 
 ```
 kemoc_storehouse_api:
-    resource: ../vendor/kemoc/storehouse-api/src/Controller/
+    resource: ../vendor/kemoc/storehouse-api/Controller/
     type: annotation
     prefix: /storehouse
 ...

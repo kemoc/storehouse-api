@@ -48,12 +48,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Kemoc\\Storehouse\\ApiBundle\\": "src/"
-        }
+            "Kemoc\\Storehouse\\ApiBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Kemoc\\Storehouse\\ApiBundle\\Tests\\": "tests/"
+            "Kemoc\\Storehouse\\ApiBundle\\Tests\\": "Tests/"
         }
     },
     "conflict": {
@@ -67,5 +70,6 @@
             "allow-contrib": false,
             "require": "4.1.*"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
