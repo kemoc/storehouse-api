@@ -6,8 +6,11 @@ Add routing to /config/routes.yaml
 
 ```
 kemoc_storehouse_api:
-    resource: ../vendor/kemoc/storehouse-api/Controller/
-    type: annotation
-    prefix: /storehouse
+    resource: ../vendor/kemoc/storehouse-api/Controller/REST
+    prefix: /storehouse/api/rest
+    type: rest
 ...
 ```
+
+Set `<symfony-root>/config/packages/fos_rest.yaml`
+by: `<this-bundle>/Resources/doc/fos_rest.yaml`
