@@ -7,7 +7,9 @@ namespace Kemoc\Storehouse\ApiBundle\Controller\REST;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-//use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use InvalidArgumentException;
 use Kemoc\Storehouse\ApiBundle\Entity\Item;
 use Kemoc\Storehouse\ApiBundle\Exception\BadRequestDataException;
@@ -49,15 +51,19 @@ class ItemController extends FOSRestController
     	return $this->formFactory;
     }
     /**
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Gets a Type for a given id",
-     *   output = "Kemoc\Storehouse\ApiBundle\Entity\Item",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     404 = "Returned when the page is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Gets a Type for a given id",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the page is not found"
+     *     )
      * )
+     *
      *
      * @param int $id
      *
@@ -89,17 +95,41 @@ class ItemController extends FOSRestController
     /**
      * Create a Type from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Creates a new type from the submitted data.",
-     *   input = "Kemoc\Storehouse\ApiBundle\Entity\Item",
-     *   statusCodes = {
-     *     200 = "Returned when successful",
-     *     400 = "Returned when the form has errors",
-     *     401 = "Returned when not authenticated",
-     *     403 = "Returned when not having permissions"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Creates a new type from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="formData",
+     *         description="",
+     *         required=true,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         in="formData",
+     *         description="",
+     *         required=true,
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when not authenticated"
+     *     ),
+     *     @SWG\Response(
+     *         response="403",
+     *         description="Returned when not having permissions"
+     *     )
      * )
+     *
      *
      * @param Request $request the request object
      * @throws BadRequestDataException
@@ -206,17 +236,55 @@ class ItemController extends FOSRestController
      * Update existing type from the submitted data or create a new type.
      * All required fields must be set within request data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "Kemoc\Storehouse\ApiBundle\Entity\Item",
-     *   statusCodes = {
-     *     201 = "Returned when the Type is created",
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors",
-     *     401 = "Returned when not authenticated",
-     *     403 = "Returned when not having permissions"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing type from the submitted data or create a new type.",
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         type="string",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="body",
+     *         description="",
+     *         required=true,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when the Type is created"
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when not authenticated"
+     *     ),
+     *     @SWG\Response(
+     *         response="403",
+     *         description="Returned when not having permissions"
+     *     )
      * )
+     *
      *
      * @param Request $request
      * @param int $id
@@ -261,16 +329,27 @@ class ItemController extends FOSRestController
      * REST action which deletes type by id.
      * Method: DELETE, url: /api/typoscript/types/{id}.{_format}
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   description = "Deletes a Type for a given id",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     401 = "Returned when not authenticated",
-     *     403 = "Returned when not having permissions",
-     *     404 = "Returned when the type is not found"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Deletes a Type for a given id",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when not authenticated"
+     *     ),
+     *     @SWG\Response(
+     *         response="403",
+     *         description="Returned when not having permissions"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when the type is not found"
+     *     )
      * )
+     *
      *
      * @param Request $request
      * @param int $id
@@ -300,16 +379,51 @@ class ItemController extends FOSRestController
     /**
      * Update existing type from the submitted data.
      *
-     * @ApiDoc(
-     *   resource = true,
-     *   input = "Kemoc\Storehouse\ApiBundle\Entity\Item",
-     *   statusCodes = {
-     *     204 = "Returned when successful",
-     *     400 = "Returned when the form has errors",
-     *     401 = "Returned when not authenticated",
-     *     403 = "Returned when not having permissions"
-     *   }
+     * @Operation(
+     *     tags={""},
+     *     summary="Update existing type from the submitted data.",
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         type="string",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="amount",
+     *         in="body",
+     *         description="",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="body",
+     *         description="",
+     *         required=true,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when the form has errors"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when not authenticated"
+     *     ),
+     *     @SWG\Response(
+     *         response="403",
+     *         description="Returned when not having permissions"
+     *     )
      * )
+     *
      *
      * @param Request $request the request object
      * @param int $id of the Item

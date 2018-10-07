@@ -25,7 +25,7 @@ trait CreateUpdateTrait
     protected $name;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      * @Assert\Range(min="0")
      * @var int
      */

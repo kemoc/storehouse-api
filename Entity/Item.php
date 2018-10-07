@@ -39,6 +39,7 @@ class Item
      *
      * @ORM\Column(name="amount", type="integer", options={"default": 0})
      * @Assert\Length(min="0")
+     * @Assert\NotNull()
      */
     private $amount = 0;
 
