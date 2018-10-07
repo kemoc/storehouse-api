@@ -53,7 +53,7 @@ class ItemController extends FOSRestController
     	return $this->formFactory;
     }
     /**
-     * @Rest\Route(path="/{id}", requirements={"id":"[\d]+"})
+     * @Rest\Route(path="/{id}", requirements={"id":"[1-9]+[0-9]*"})
      * @ParamConverter("item", options={"mapping": {"id": "id"}})
      *
      * @Operation(
