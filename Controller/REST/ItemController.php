@@ -7,6 +7,7 @@ namespace Kemoc\Storehouse\ApiBundle\Controller\REST;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
+//use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use InvalidArgumentException;
 use Kemoc\Storehouse\ApiBundle\Entity\Item;
 use Kemoc\Storehouse\ApiBundle\Exception\BadRequestDataException;
@@ -59,9 +60,13 @@ class ItemController extends FOSRestController
      * )
      *
      * @param int $id
-     * @throws NotFoundHttpException
      *
      * @return Item
+     *
+     * @throws NotFoundHttpException
+     * curl -G storehouse-api.local/storehouse/api/rest/item/1
+     * "nelmio/api-doc-bundle": "^2.0",
+     * nelmio/api-doc-bundle ^2.0
      */
     public function getItemAction(int $id): Item
     {

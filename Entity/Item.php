@@ -12,10 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Item
  * @package Kemoc\Storehouse\ApiBundle\Entity
  *
- * @ORM\Table(name="item")
- * @ORM\Entity(repositoryClass="Kemoc\Storehouse\ApiBundle\Repository\ItemRepository",
- *     indexes={@ORM\Index(name="amount_idx", columns={"amount"})}
- *     )
+ * @ORM\Table(name="item",indexes={@ORM\Index(name="amount_idx", columns={"amount"})})
+ * @ORM\Entity(repositoryClass="Kemoc\Storehouse\ApiBundle\Repository\ItemRepository")
  */
 class Item
 {
@@ -35,11 +33,11 @@ class Item
      * @Assert\Length(max=255)
      * @Assert\NotBlank()
      */
-    private $name;
+    private $name = "";
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", options={"default": 0})
+     * @ORM\Column(name="amount", type="integer", options={"default": 0})
      * @Assert\Length(min="0")
      */
     private $amount = 0;
