@@ -2,13 +2,13 @@
 declare(strict_types=1);
 
 
-
 namespace Kemoc\Storehouse\ApiBundle\Controller\REST;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\Operation;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Swagger\Annotations as SWG;
 use InvalidArgumentException;
 use Kemoc\Storehouse\ApiBundle\Entity\Item;
@@ -28,10 +28,12 @@ use FOS\RestBundle\View\View;
 use Symfony\Component\Form\FormInterface;
 
 /**
+ * @Rest\NamePrefix("item_")
+ * @Rest\Prefix("/item")
+ *
  * Class ItemController
  * @package Kemoc\Storehouse\ApiBundle\Controller\REST
  *
- * @Rest\Route(name="api_rest_item", path="/item")
  */
 class ItemController extends FOSRestController
 {
@@ -51,9 +53,20 @@ class ItemController extends FOSRestController
     	return $this->formFactory;
     }
     /**
+     * @Rest\Route(path="/{id}", requirements={"id":"[\d]+"})
+     * @ParamConverter("item", options={"mapping": {"id": "id"}})
+     *
      * @Operation(
      *     tags={""},
-     *     summary="Gets a Type for a given id",
+     *     summary="Gets a Item for a given id",
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Item id",
+     *         required=true,
+     *         type="integer",
+     *         schema=""
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful"
@@ -70,24 +83,12 @@ class ItemController extends FOSRestController
      * @return Item
      *
      * @throws NotFoundHttpException
+     *
      * curl -G storehouse-api.local/storehouse/api/rest/item/1
-     * "nelmio/api-doc-bundle": "^2.0",
-     * nelmio/api-doc-bundle ^2.0
+     *
      */
-    public function getItemAction(int $id): Item
+    public function getAction(Item $item): Item
     {
-        $item = null;
-        /** @var ItemRepository $itemsRepo */
-        $itemsRepo = $this->getDoctrine()->getRepository(Item::class);
-        try {
-            $item = $itemsRepo->find($id);
-        } catch (\Exception $exception) {
-            $item = null;
-        }
-
-        if (!$item) {
-            throw new NotFoundHttpException(sprintf('The Item resource where id = "%s" was not found.', $id));
-        }
 
         return $item;
     }
@@ -136,7 +137,7 @@ class ItemController extends FOSRestController
      *
      * @return FormInterface|View
      */
-    public function postItemAction(Request $request) {
+    public function postAction(Request $request) {
         try {
             try {
 
@@ -147,7 +148,7 @@ class ItemController extends FOSRestController
                     '_format' => $request->get('_format')
                 ];
 
-                return $this->routeRedirectView('api_rest_item_get_item', $routeOptions,
+                return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions,
                     Response::HTTP_CREATED
                 );
 
@@ -156,7 +157,7 @@ class ItemController extends FOSRestController
                 return $exception->getForm();
             }
         } catch (Exception $exception) {
-            throw $this->getFosRestSupportedException($exception);
+            throw $this->createFosRestSupportedException($exception);
         }
     }
 
@@ -227,7 +228,7 @@ class ItemController extends FOSRestController
         throw new InvalidFormDataException($form, 'Invalid submitted form data');
     }
 
-    protected function getFosRestSupportedException(Throwable $exception) {
+    protected function createFosRestSupportedException(Throwable $exception) {
 
         return new BadRequestDataException($exception->getMessage(), 0, $exception);
     }
@@ -236,6 +237,7 @@ class ItemController extends FOSRestController
      * Update existing type from the submitted data or create a new type.
      * All required fields must be set within request data.
      *
+     * @Rest\Route(path="/{id}", requirements={"id":"[\d]*"})
      * @Operation(
      *     tags={""},
      *     summary="Update existing type from the submitted data or create a new type.",
@@ -243,7 +245,7 @@ class ItemController extends FOSRestController
      *         name="name",
      *         in="body",
      *         description="",
-     *         required=false,
+     *         required=true,
      *         type="string",
      *         schema=""
      *     ),
@@ -251,15 +253,15 @@ class ItemController extends FOSRestController
      *         name="amount",
      *         in="body",
      *         description="",
-     *         required=false,
+     *         required=true,
      *         type="integer",
      *         schema=""
      *     ),
      *     @SWG\Parameter(
      *         name="id",
-     *         in="body",
+     *         in="path",
      *         description="",
-     *         required=true,
+     *         required=false,
      *         type="integer",
      *         schema=""
      *     ),
@@ -294,13 +296,19 @@ class ItemController extends FOSRestController
      * @throws NotFoundHttpException when Item not exist
      * @throws BadRequestDataException
      */
-    public function putItemAction(Request $request, int $id) {
+    public function putAction(Request $request, int $id = null) {
         try {
             try {
 
                 /** @var ItemRepository $itemRepository */
                 $itemRepository = $this->getDoctrine()->getRepository(Item::class);
-                $item = $itemRepository->find($id);
+                $item = null;
+                if($id) {
+                    $item = $itemRepository->find($id);
+                    if (!$item) {
+                        throw new NotFoundHttpException(sprintf('Not found Item of id = "%s"', $id));
+                    }
+                }
                 if (!$item) {
                     $statusCode = Response::HTTP_CREATED;
                     $item = $this->createNewItem($request);
@@ -314,24 +322,25 @@ class ItemController extends FOSRestController
                     '_format' => $request->get('_format')
                 ];
 
-                return $this->routeRedirectView('api_rest_item_get_item', $routeOptions, $statusCode);
+                return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions, $statusCode);
 
             } catch (InvalidFormDataException $exception) {
 
                 return $exception->getForm();
             }
         } catch (Exception $exception) {
-            throw $this->getFosRestSupportedException($exception);
+            throw $this->createFosRestSupportedException($exception);
         }
     }
 
     /**
      * REST action which deletes type by id.
-     * Method: DELETE, url: /api/typoscript/types/{id}.{_format}
+     * Method: DELETE, url: /storehouse/api/rest/item/{id}.{_format}
      *
+     * @Rest\Route(path="/{id}", requirements={"id":"[\d]+"})
      * @Operation(
      *     tags={""},
-     *     summary="Deletes a Type for a given id",
+     *     summary="Deletes an Item for a given id",
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful"
@@ -358,27 +367,20 @@ class ItemController extends FOSRestController
      *
      * @throws BadRequestDataException
      */
-    public function deleteItemAction(Request $request, int $id) {
+    public function deleteAction(Request $request, Item $item) {
 
-        /** @var ItemRepository $itemRepository */
-        $itemRepository = $this->getDoctrine()->getRepository(Item::class);
-        $item = $itemRepository->find($id);
-
-        if ($item) {
-            try {
-                $this->getDoctrine()->getManager()->remove($item);
-                $this->getDoctrine()->getManager()->flush();
-            } catch (Exception $exception) {
-                throw $this->getFosRestSupportedException($exception);
-            }
-        } else {
-            throw new NotFoundHttpException(sprintf('The resource \'%s\' was not found.', $id));
+        try {
+            $this->getDoctrine()->getManager()->remove($item);
+            $this->getDoctrine()->getManager()->flush();
+        } catch (Exception $exception) {
+            throw $this->createFosRestSupportedException($exception);
         }
     }
 
     /**
-     * Update existing type from the submitted data.
+     * Update existing Item from the submitted data.
      *
+     * @Rest\Route(path="/{id}", requirements={"id":"[\d]+"})
      * @Operation(
      *     tags={""},
      *     summary="Update existing type from the submitted data.",
@@ -386,7 +388,7 @@ class ItemController extends FOSRestController
      *         name="name",
      *         in="body",
      *         description="",
-     *         required=false,
+     *         required=true,
      *         type="string",
      *         schema=""
      *     ),
@@ -394,13 +396,13 @@ class ItemController extends FOSRestController
      *         name="amount",
      *         in="body",
      *         description="",
-     *         required=false,
+     *         required=true,
      *         type="integer",
      *         schema=""
      *     ),
      *     @SWG\Parameter(
      *         name="id",
-     *         in="body",
+     *         in="path",
      *         description="",
      *         required=true,
      *         type="integer",
@@ -433,7 +435,7 @@ class ItemController extends FOSRestController
      * @throws NotFoundHttpException when type does not exist
      * @throws BadRequestDataException
      */
-    public function patchItemAction(Request $request, int $id) {
+    public function patchAction(Request $request, int $id) {
         try {
             try {
                 /** @var ItemRepository $itemRepository */
@@ -450,14 +452,14 @@ class ItemController extends FOSRestController
                     '_format' => $request->get('_format')
                 ];
 
-                return $this->routeRedirectView('api_rest_item_get_item', $routeOptions, $statusCode);
+                return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions, $statusCode);
 
             } catch (InvalidFormDataException $exception) {
 
                 return $exception->getForm();
             }
         } catch (Exception $exception) {
-            throw $this->getFosRestSupportedException($exception);
+            throw $this->createFosRestSupportedException($exception);
         }
     }
 }

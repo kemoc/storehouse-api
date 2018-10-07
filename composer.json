@@ -34,6 +34,7 @@
         "symfony/yaml": "*",
         "friendsofsymfony/rest-bundle": "^2.4",
         "jms/serializer-bundle": "^2.4",
+        "nelmio/api-doc-bundle": "^3.3",
         "pagerfanta/pagerfanta": "^2.0"
     },
     "require-dev": {
