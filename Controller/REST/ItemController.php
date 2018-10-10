@@ -96,6 +96,7 @@ class ItemController extends FOSRestController
     /**
      * Create a Type from the submitted data.
      *
+     * @Rest\Route(path="/")
      * @Operation(
      *     tags={""},
      *     summary="Creates a new type from the submitted data.",
@@ -144,13 +145,14 @@ class ItemController extends FOSRestController
                 $persistedItem = $this->createNewItem($request);
 
                 $routeOptions = [
-                    'id' => $persistedItem->getId(),
-                    '_format' => $request->get('_format')
+                    'id' => $persistedItem->getId()
                 ];
 
-                return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions,
+                /*return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions,
                     Response::HTTP_CREATED
-                );
+                );*/
+
+                return View::create($persistedItem, Response::HTTP_CREATED);
 
             } catch (InvalidFormDataException $exception) {
 
@@ -237,7 +239,7 @@ class ItemController extends FOSRestController
      * Update existing type from the submitted data or create a new type.
      * All required fields must be set within request data.
      *
-     * @Rest\Route(path="/{id}", requirements={"id":"[\d]*"})
+     * @Rest\Route(path="/{id}", requirements={"id":"[1-9]+[0-9]*"})
      * @Operation(
      *     tags={""},
      *     summary="Update existing type from the submitted data or create a new type.",
@@ -337,7 +339,7 @@ class ItemController extends FOSRestController
      * REST action which deletes type by id.
      * Method: DELETE, url: /storehouse/api/rest/item/{id}.{_format}
      *
-     * @Rest\Route(path="/{id}", requirements={"id":"[\d]+"})
+     * @Rest\Route(path="/{id}", requirements={"id":"[1-9]+[0-9]*"})
      * @Operation(
      *     tags={""},
      *     summary="Deletes an Item for a given id",
@@ -372,6 +374,7 @@ class ItemController extends FOSRestController
         try {
             $this->getDoctrine()->getManager()->remove($item);
             $this->getDoctrine()->getManager()->flush();
+
         } catch (Exception $exception) {
             throw $this->createFosRestSupportedException($exception);
         }
@@ -452,7 +455,8 @@ class ItemController extends FOSRestController
                     '_format' => $request->get('_format')
                 ];
 
-                return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions, $statusCode);
+                //return $this->routeRedirectView('storehouse_api_rest_item_get', $routeOptions, $statusCode);
+                return View::create($item, $statusCode);
 
             } catch (InvalidFormDataException $exception) {
 

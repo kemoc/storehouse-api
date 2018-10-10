@@ -21,7 +21,7 @@ class Update implements UpdateInterface
     public function __construct(ItemEntity $itemEntity)
     {
         $this->setItemEntity($itemEntity);
-
+        $this->id = $itemEntity->getId();
     }
 
     /**
@@ -37,7 +37,7 @@ class Update implements UpdateInterface
      */
     public function setId(int $id): void
     {
-        $this->id = $id;
+        //$this->id = $id;
     }
 
 

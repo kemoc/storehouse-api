@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Item
 {
+    const NUM_ITEMS = 25;
+
     /**
      * @var integer
      *
